@@ -50,6 +50,44 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input generated.NewUs
 	}, nil
 }
 
+func (r *mutationResolver) UpdateUser(ctx context.Context, userID string, updatedUser generated.NewUser) (*generated.User, error) {
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return nil, err
+	}
+	u, err := models.UpdateUser(id, &models.User{
+		UserName: updatedUser.Username,
+		Password: updatedUser.Password,
+		Role:     updatedUser.Role,
+		Email:    updatedUser.Email,
+	}, r.DB)
+	if err != nil {
+		return nil, err
+	}
+	return &generated.User{
+		UserID:   strconv.Itoa(u.UserID),
+		Username: u.UserName,
+		Role:     u.Role,
+		Email:    u.Email,
+	}, nil
+}
+
+func (r *mutationResolver) DeleteUser(ctx context.Context, userID string) (*generated.User, error) {
+	id, err := strconv.Atoi(userID)
+	if err != nil {
+		return nil, err
+	}
+	u, err := models.DeleteUser(id, r.DB)
+	if err != nil {
+		return nil, err
+	}
+	return &generated.User{
+		UserID: strconv.Itoa(u.UserID),
+		Role:   u.Role,
+		Email:  u.Email,
+	}, nil
+}
+
 type queryResolver struct{ *Resolver }
 
 func (r *queryResolver) GetUser(ctx context.Context, userName string, password string) (*generated.User, error) {
@@ -59,9 +97,8 @@ func (r *queryResolver) GetUser(ctx context.Context, userName string, password s
 		return nil, err
 	}
 	return &generated.User{
-		UserID:   strconv.Itoa(u.UserID),
-		Username: u.UserName,
-		Role:     u.Role,
-		Email:    u.Email,
+		UserID: strconv.Itoa(u.UserID),
+		Role:   u.Role,
+		Email:  u.Email,
 	}, nil
 }

@@ -18,7 +18,7 @@ type User struct {
 func (u *User) RegisterUser(DB *gorm.DB) (userID int, err error) {
 	// user save to our db get id
 	result := DB.Exec("INSERT INTO `user` (username, password, role, email) VALUES(?, ?, ?, ?)", u.UserName, u.Password, u.Role, u.Email)
-	// result := DB.Table("user").Create(u)
+	// result := DB.Table("user").Create(map[string]interface{}{"username": u.UserName, "password": u.Password, "role": u.Role, "email": u.Email})
 
 	// if err != nil {
 	if result.Error != nil {
@@ -35,6 +35,47 @@ func (u *User) RegisterUser(DB *gorm.DB) (userID int, err error) {
 		return 0, err
 	}
 	return int(u.UserID), nil
+}
+
+// UpdateUser edit user by id with new user
+func UpdateUser(userID int, u *User, db *gorm.DB) (user *User, err error) {
+	// fmt.Println(userID, u.UserName, u.Password, u.Role, u.Email)
+	result := db.Exec("UPDATE user SET username=?, password=?, role=?, email=? WHERE user_id = ?", u.UserName, u.Password, u.Role, u.Email, userID)
+	// result := db.Table("user").Where("user_id = ?", userID).Updates(map[string]interface{}{"username": u.UserName, "password": u.Password, "role": u.Role, "email": u.Email})
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if result.RowsAffected == 0 {
+		return nil, constant.ErrInvalidUser
+	}
+	return &User{
+		UserID:   userID,
+		UserName: u.UserName,
+		Password: u.Password,
+		Role:     u.Role,
+		Email:    u.Email,
+	}, nil
+}
+
+// DeleteUser hard delete user (id will probably not reused)
+func DeleteUser(userID int, db *gorm.DB) (user *User, err error) {
+	result := &User{
+		UserID: userID,
+	}
+	rows := db.Table("user").Where("user_id = ?", userID).Take(result)
+	if rows.Error != nil || rows.RowsAffected == 0 {
+		return nil, err
+	}
+
+	rows = db.Table("user").Where("user_id = ?", userID).Delete(result)
+	// rows := db.Table("user").Delete(result)
+	if rows.Error != nil {
+		return nil, rows.Error
+	}
+	if rows.RowsAffected == 0 {
+		return nil, constant.ErrInvalidUser
+	}
+	return result, nil
 }
 
 // LoginUser get user by id from the database
