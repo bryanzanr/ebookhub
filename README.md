@@ -16,6 +16,7 @@ The web-application is based on Golang Vanilla Framework. It's implemented throu
 7. Some of the tables like category in product didn't have all CRUD functionalities yet since it's only act as a support table or only have predefined values in it. 
 8. Authentication still not act as the middleware for securing the endpoint since there're no created_by and updated_by column yet to monitor the activity with each of the rows inside every table. 
 9. Since most of the functionalities are only CRUD, there's no additional business logic yet that can be separated. 
+10. Container only for app only, database is currently used the cloud and caching is not yet implemented. 
 
 Design Decision:
 * Create Directories similar to the kubernetes open-source project structure in one microservice and the rest of the two will follow the same standard. 
@@ -27,10 +28,13 @@ Design Decision:
 * Create utils/config for accessing the environment. 
 * Create internal/database for database migration.
 * Create internal/models for models instance.
+* Create schema.graphql for generating the query and mutation instance.
 * Create internal/handlers for additional business logic when accessing the model or beside using GraphQL.
 * Create cmd/web/resolver.go for routing the web service controller using GraphQL.
+* Create cmd/grpc for creating the gRPC server. 
 * Create internal/constant for better encapsulation on the error. 
 * Create test/ for mocking the unit-test such as models.
+* Create pkg/client for generating the protocol for gRPC client. 
 * Refactor for better validation.
 * Refactor for better variable's name.
 * Create README.md
