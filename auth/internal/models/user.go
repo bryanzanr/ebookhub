@@ -31,8 +31,8 @@ func (u *User) RegisterUser(DB *gorm.DB) (userID int, err error) {
 	// if err != nil {
 	// 	return 0, err
 	// }
-	if rows.Error != nil || rows.RowsAffected == 0 {
-		return 0, err
+	if rows.Error != nil {
+		return 0, rows.Error
 	}
 	return int(u.UserID), nil
 }
@@ -63,17 +63,16 @@ func DeleteUser(userID int, db *gorm.DB) (user *User, err error) {
 		UserID: userID,
 	}
 	rows := db.Table("user").Where("user_id = ?", userID).Take(result)
-	if rows.Error != nil || rows.RowsAffected == 0 {
-		return nil, err
-	}
-
-	rows = db.Table("user").Where("user_id = ?", userID).Delete(result)
-	// rows := db.Table("user").Delete(result)
 	if rows.Error != nil {
 		return nil, rows.Error
 	}
 	if rows.RowsAffected == 0 {
 		return nil, constant.ErrInvalidUser
+	}
+	rows = db.Table("user").Where("user_id = ?", userID).Delete(result)
+	// rows := db.Table("user").Delete(result)
+	if rows.Error != nil {
+		return nil, rows.Error
 	}
 	return result, nil
 }

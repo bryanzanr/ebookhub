@@ -16,6 +16,7 @@ type Config struct {
 	MySQLMaxOpen int
 	RedisURL     string
 	Port         int
+	GRPCPort     int
 }
 
 // InitializeAppConfig to initialize AppConfig
@@ -39,5 +40,8 @@ func InitializeAppConfig() {
 	}
 	if AppConfig.Port, err = strconv.Atoi(os.Getenv("PORT")); err != nil {
 		log.Fatal("port is missing in config")
+	}
+	if AppConfig.GRPCPort, err = strconv.Atoi(os.Getenv("grpc_auth")); err != nil {
+		AppConfig.GRPCPort = 9111
 	}
 }
