@@ -1,0 +1,34 @@
+type Book{
+    book_id: ID!
+    img_path: String!
+    title: String!
+    author: String!
+    publisher: String!
+    description: String!
+    stock: Int!
+    category: String!
+    created_at: String!
+    upload_id: Int!
+}
+
+input NewBook{
+    img_path: String!
+    title: String!
+    author: String!
+    publisher: String!
+    description: String!
+    stock: Int!
+    category: String!
+}
+
+type Query {
+    getBookByCategoryId(categoryId: Int!): [Book]!
+    books: [Book]!
+    getAllBooksWithLimitAndOffset(limit: Int!, offset: Int!): [Book]!
+}
+
+type Mutation {
+    createBook(input: NewBook!): Book!
+    updateBook(book_id: ID!, updatedBook: NewBook!): Book!
+    deleteBook(book_id: ID!): Book!
+}

@@ -1,0 +1,20 @@
+type Order{
+    order_id: ID!
+    book_id: Int!
+    user_id: Int!
+}
+
+input NewOrder{
+    book_id: Int!
+    user_id: Int!
+}
+
+type Query {
+    getOrdersByUserId(userId: Int!): [Order]!
+}
+
+type Mutation {
+    createOrder(input: NewOrder!): Order!
+    updateOrder(order_id: ID!, updatedOrder: NewOrder!): Order!
+    deleteOrder(order_id: ID!): Order!
+}
