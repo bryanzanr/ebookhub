@@ -1,5 +1,5 @@
-#!/bin/bash
-FROM alpine
-COPY ./auth /bin/
-
-ENTRYPOINT ./bin/auth
+FROM golang:latest
+WORKDIR /golang/src/github/bryanzanr/ebookhub/auth
+ADD . .
+RUN go build
+ENTRYPOINT [ "./auth" ]

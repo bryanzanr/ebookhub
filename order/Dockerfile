@@ -1,5 +1,5 @@
-#!/bin/bash
-FROM alpine
-COPY ./order /bin/
-
-ENTRYPOINT ./bin/order
+FROM golang:latest
+WORKDIR /golang/src/github/bryanzanr/ebookhub/order
+ADD . .
+RUN go build
+ENTRYPOINT [ "./order" ]
