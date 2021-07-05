@@ -2,6 +2,8 @@ package com.herokuapp.ebookhub.book.usecases;
 
 import com.herokuapp.ebookhub.book.entities.Book;
 import com.herokuapp.ebookhub.book.entities.BookRepository;
+import com.herokuapp.ebookhub.book.usecases.CreateBookCmd;
+import com.herokuapp.ebookhub.book.usecases.CreateBookUseCase;
 // import com.herokuapp.ebookhub.user.entities.User;
 // import com.herokuapp.ebookhub.user.entities.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +23,8 @@ import static org.mockito.Mockito.when;
 
 class CreateBookUseCaseTest {
 
-    private final CreateBookCmd cmd = CreateBookCmd.valueOf("dummy", 1L);
+    // private final CreateBookCmd cmd = CreateBookCmd.valueOf("dummy", 1L);
+    private final CreateBookCmd cmd = CreateBookCmd.valueOf("dummy");
 
     @InjectMocks
     private CreateBookUseCase useCase;
@@ -92,7 +95,7 @@ class CreateBookUseCaseTest {
     }
 
     private void prepareAndExecute() {
-        stubUser();
+        stubBook();
         stubNotExistBook();
 
         useCase.createBook(cmd);
@@ -108,7 +111,7 @@ class CreateBookUseCaseTest {
         when(bookRepository.findByTitle(cmd.getBookTitle())).thenReturn(Optional.of(injected));
     }
 
-    private void stubNotExistCompany() {
+    private void stubNotExistBook() {
         when(bookRepository.findByTitle(cmd.getBookTitle())).thenReturn(Optional.empty());
     }
 }

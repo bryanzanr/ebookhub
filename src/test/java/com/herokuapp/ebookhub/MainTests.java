@@ -1,4 +1,4 @@
-package com.sharing.tdd;
+package com.herokuapp.ebookhub;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -11,6 +11,10 @@ public class CreateBookCmd {
 
     // long userId;
 
+    public String getBookTitle() {
+        return this.bookTitle;
+    }
+
     // public Book toEntity(User user) {
     public Book toEntity() {
         Book book = new Book();

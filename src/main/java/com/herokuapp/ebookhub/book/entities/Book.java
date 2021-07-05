@@ -36,6 +36,14 @@ public class Book {
     // @JoinColumn(name = "user_id")
     // private User user;
 
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

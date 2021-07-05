@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example;
+package com.herokuapp.ebookhub;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -38,8 +38,15 @@ import java.util.Map;
 @SpringBootApplication
 public class Main {
 
-  @Value("${spring.datasource.url}")
+  // @Value("${spring.datasource.url}")
+  @Value("${SPRING_DATASOURCE_URL}")
   private String dbUrl;
+  // @Value("${spring.datasource.username}")
+  @Value("${SPRING_DATASOURCE_USERNAME}")
+  private String dbUser;
+  // @Value("${spring.datasource.password}")
+  @Value("${SPRING_DATASOURCE_PASSWORD}")
+  private String dbPass;
 
   @Autowired
   private DataSource dataSource;
@@ -76,11 +83,15 @@ public class Main {
 
   @Bean
   public DataSource dataSource() throws SQLException {
+    // System.out.println("MASUK" + dbUrl);
     if (dbUrl == null || dbUrl.isEmpty()) {
       return new HikariDataSource();
     } else {
       HikariConfig config = new HikariConfig();
+      config.setDriverClassName("com.mysql.jdbc.Driver");
       config.setJdbcUrl(dbUrl);
+      config.setUsername(dbUser);
+      config.setPassword(dbPass);
       return new HikariDataSource(config);
     }
   }
