@@ -16,7 +16,7 @@ public class CreateBookUseCase {
 
     // private final UserRepository userRepository;
 
-    private final BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     public void createBook(@NonNull CreateBookCmd cmd) {
         // User user = getUser(cmd);

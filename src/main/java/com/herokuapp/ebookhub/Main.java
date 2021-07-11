@@ -16,51 +16,58 @@
 
 package com.herokuapp.ebookhub;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import com.herokuapp.ebookhub.user.entities.UserRepository;
 import java.util.Map;
 
+// import org.springframework.boot.CommandLineRunner;
+// import com.herokuapp.ebookhub.user.entities.User;
+// import java.util.List;
+
+// import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+// import org.springframework.boot.autoconfigure.domain.EntityScan;
+// import org.springframework.context.annotation.ComponentScan;
+// import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+// import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 @Controller
+// @EnableAutoConfiguration
+// @ComponentScan(basePackages={"com.herokuapp.ebookhub"})
+// @EnableJpaRepositories(basePackages="com.herokuapp.ebookhub.user.repositories")
+// @EnableTransactionManagement
+// @EntityScan(basePackages="com.herokuapp.ebookhub.user.entities")
 @SpringBootApplication
 public class Main {
 
-  // @Value("${spring.datasource.url}")
-  @Value("${SPRING_DATASOURCE_URL}")
-  private String dbUrl;
-  // @Value("${spring.datasource.username}")
-  @Value("${SPRING_DATASOURCE_USERNAME}")
-  private String dbUser;
-  // @Value("${spring.datasource.password}")
-  @Value("${SPRING_DATASOURCE_PASSWORD}")
-  private String dbPass;
+//   @Autowired
+  private UserRepository userRepository;
 
   @Autowired
-  private DataSource dataSource;
+  public Main(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
-  public static void main(String[] args) throws Exception {
+
+/*
+  private DataSource dataSource;*/
+
+  // public static void main(String[] args) throws Exception {
+  public static void main (String[] args) {
     SpringApplication.run(Main.class, args);
   }
 
-  @RequestMapping("/")
+  @GetMapping("/")
   String index() {
     return "index";
   }
 
-  @RequestMapping("/db")
+ /* @RequestMapping("/db")
   String db(Map<String, Object> model) {
     try (Connection connection = dataSource.getConnection()) {
       Statement stmt = connection.createStatement();
@@ -79,21 +86,27 @@ public class Main {
       model.put("message", e.getMessage());
       return "error";
     }
-  }
+  }*/
 
-  @Bean
-  public DataSource dataSource() throws SQLException {
-    // System.out.println("MASUK" + dbUrl);
-    if (dbUrl == null || dbUrl.isEmpty()) {
-      return new HikariDataSource();
-    } else {
-      HikariConfig config = new HikariConfig();
-      config.setDriverClassName("com.mysql.jdbc.Driver");
-      config.setJdbcUrl(dbUrl);
-      config.setUsername(dbUser);
-      config.setPassword(dbPass);
-      return new HikariDataSource(config);
-    }
+  @RequestMapping("/db")
+	// @Bean
+//   public CommandLineRunner run(UserRepository userRepository) throws Exception {
+  String db(Map<String, Object> model) {
+	// return (String[] args) -> {
+	// 	userRepository.findAll().forEach(user -> System.out.println(user.getEmail() + " " + user.getRole()));
+	// };
+    //   try {
+        userRepository.findAll().forEach(user -> 
+		model.put(user.getEmail(), user.getRole()));
+        // for (int i = 0; i < output.size(); i++) {
+        //   model.put(output.get(i).getEmail(), output.get(i).getRole());
+        // }
+
+        return "db";
+    // } catch (Exception e) {
+    //   model.put("message", e.getMessage());
+    //   return "error";
+    // }
   }
 
 }

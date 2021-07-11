@@ -3,17 +3,19 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.example</groupId>
-  <artifactId>java-getting-started</artifactId>
-  <version>1.0</version>
+  <groupId>com.herokuapp</groupId>
+  <artifactId>herokuapp-ebookhub</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
+      <!--<version>2.3.0.RELEASE</version>-->
     <version>2.5.2</version>
     <relativePath/>
-  </parent>
-  <name>java-getting-started</name>
+  </parent><!-- lookup parent from repository -->
+  <name>herokuapp-ebookhub</name>
+  <description>Project for ebookhub monolith refactor</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -40,12 +42,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
@@ -65,6 +61,19 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+             <version>8.0.25</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -72,7 +81,23 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                        <goal>build-info</goal>
+                        </goals>
+                        <configuration>
+                        <additionalProperties>
+                            <encoding.source>${project.build.sourceEncoding}</encoding.source>
+                            <encoding.reporting>${project.reporting.outputEncoding}</encoding.reporting>
+                            <java.source>${maven.compiler.source}</java.source>
+                            <java.target>${maven.compiler.target}</java.target>
+                        </additionalProperties>
+                        </configuration>
+                    </execution>
+                </executions>
                 <configuration>
+                    <!-- <executable>true</executable> -->
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -80,12 +105,6 @@
                         </exclude>
                     </excludes>
                     <classifier>${repackage.classifier}</classifier>
-                    <image>
-                        <builder>paketobuildpacks/builder:tiny</builder>
-                        <env>
-                            <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-                        </env>
-                    </image>
                 </configuration>
             </plugin>
             <plugin>
@@ -138,6 +157,10 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+         <repository>
+            <id>spring-snapshots</id>
+            <url>https://repo.springsource.org/snapshot</url>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -157,39 +180,6 @@
                 <repackage.classifier>exec</repackage.classifier>
                 <native-buildtools.version>0.9.1</native-buildtools.version>
             </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>org.graalvm.buildtools</groupId>
-                    <artifactId>junit-platform-native</artifactId>
-                    <version>${native-buildtools.version}</version>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.graalvm.buildtools</groupId>
-                        <artifactId>native-maven-plugin</artifactId>
-                        <version>${native-buildtools.version}</version>
-                        <executions>
-                            <execution>
-                                <id>test-native</id>
-                                <phase>test</phase>
-                                <goals>
-                                    <goal>test</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>build-native</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 

@@ -1,6 +1,6 @@
 package com.herokuapp.ebookhub.user.entities;
 
-import lombok.*;
+// import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -8,12 +8,12 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user")
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+// @Getter
+// @Setter
+// @ToString
+// @NoArgsConstructor
+// @AllArgsConstructor
+// @Builder
 public class User {
 
     @Id
@@ -23,6 +23,14 @@ public class User {
     @Column
     private String role;
     private String email;
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getRole(){
+        return this.role;
+    }
 
     @Override
     public boolean equals(Object o) {

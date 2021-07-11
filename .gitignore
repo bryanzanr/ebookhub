@@ -1,12 +1,29 @@
-target/
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+
+.classpath
 .env
 .idea/
-*.iml
-.classpath
+.mvn/
 .project
 .settings/
-docs/tmp/
-docs/java-getting-started/
-docs/deploying-spring-boot-apps/
-.mvn/wrapper/maven-wrapper.jar
-.mvn/
+compiler.xml
+encodings.xml
+herokuapp-ebookhub.iml
+jarRepositories.xml
+java-getting-started.iml
+jpa-buddy.xml
+libraries/
+misc.xml
+modules.xml
+sonarlint/
+target/
+uiDesigner.xml
+
+
