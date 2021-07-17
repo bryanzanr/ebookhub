@@ -16,97 +16,72 @@
 
 package com.herokuapp.ebookhub;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.herokuapp.ebookhub.user.dto.request.LoginRequest;
+import com.herokuapp.ebookhub.user.dto.request.RegisterRequest;
+import com.herokuapp.ebookhub.user.entities.User;
+import com.herokuapp.ebookhub.user.usecases.RegisterUserUseCase;
 import com.herokuapp.ebookhub.user.entities.UserRepository;
+
+import java.util.List;
 import java.util.Map;
 
-// import org.springframework.boot.CommandLineRunner;
-// import com.herokuapp.ebookhub.user.entities.User;
-// import java.util.List;
-
-// import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-// import org.springframework.boot.autoconfigure.domain.EntityScan;
-// import org.springframework.context.annotation.ComponentScan;
-// import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-// import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Controller
-// @EnableAutoConfiguration
-// @ComponentScan(basePackages={"com.herokuapp.ebookhub"})
-// @EnableJpaRepositories(basePackages="com.herokuapp.ebookhub.user.repositories")
-// @EnableTransactionManagement
-// @EntityScan(basePackages="com.herokuapp.ebookhub.user.entities")
 @SpringBootApplication
 public class Main {
 
-//   @Autowired
-  private UserRepository userRepository;
+	private UserRepository userRepository;
 
-  @Autowired
-  public Main(UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+	@Autowired
+	public Main(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+	public static void main (String[] args) {
+		SpringApplication.run(Main.class, args);
+	}
 
+	@PostMapping("/login")
+	public ResponseEntity<Map<String, Object>> Login(
+		@RequestBody(required = false) LoginRequest loginRequest) {
+			return new RegisterUserUseCase(this.userRepository).LoginUser(loginRequest);
+	}
 
-/*
-  private DataSource dataSource;*/
+	@PostMapping("/register")
+	public ResponseEntity<Map<String, Object>> Register(
+		@RequestBody(required = false) RegisterRequest registerRequest) {
+			return new RegisterUserUseCase(this.userRepository).RegisterUser(registerRequest);
+	}
 
-  // public static void main(String[] args) throws Exception {
-  public static void main (String[] args) {
-    SpringApplication.run(Main.class, args);
-  }
+	@PutMapping("/user/{id}")
+	public ResponseEntity<Map<String, Object>> UpdateUser(
+	@PathVariable("id") long id,
+	@RequestBody(required = false) RegisterRequest registerRequest) {
+		return new RegisterUserUseCase(this.userRepository).UpdateUser(registerRequest, id);
+	}
 
-  @GetMapping("/")
-  String index() {
-    return "index";
-  }
-
- /* @RequestMapping("/db")
-  String db(Map<String, Object> model) {
-    try (Connection connection = dataSource.getConnection()) {
-      Statement stmt = connection.createStatement();
-      stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-      stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-      ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
-
-      ArrayList<String> output = new ArrayList<String>();
-      while (rs.next()) {
-        output.add("Read from DB: " + rs.getTimestamp("tick"));
-      }
-
-      model.put("records", output);
-      return "db";
-    } catch (Exception e) {
-      model.put("message", e.getMessage());
-      return "error";
-    }
-  }*/
-
-  @RequestMapping("/db")
-	// @Bean
-//   public CommandLineRunner run(UserRepository userRepository) throws Exception {
-  String db(Map<String, Object> model) {
-	// return (String[] args) -> {
-	// 	userRepository.findAll().forEach(user -> System.out.println(user.getEmail() + " " + user.getRole()));
-	// };
-    //   try {
-        userRepository.findAll().forEach(user -> 
-		model.put(user.getEmail(), user.getRole()));
-        // for (int i = 0; i < output.size(); i++) {
-        //   model.put(output.get(i).getEmail(), output.get(i).getRole());
-        // }
-
-        return "db";
-    // } catch (Exception e) {
-    //   model.put("message", e.getMessage());
-    //   return "error";
-    // }
-  }
+	@DeleteMapping("/user/{id}")
+	public ResponseEntity<Map<String, Object>> DeleteUser(
+	@PathVariable("id") long id) {
+		return new RegisterUserUseCase(this.userRepository).DeleteUser(id);
+	}
+	
+	@GetMapping("/db")
+	public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String email) {
+		return new RegisterUserUseCase(this.userRepository).TestDatabase(email);
+	}
 
 }
