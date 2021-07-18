@@ -29,10 +29,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.herokuapp.ebookhub.book.entities.BookRepository;
 import com.herokuapp.ebookhub.user.dto.request.LoginRequest;
 import com.herokuapp.ebookhub.user.dto.request.RegisterRequest;
 import com.herokuapp.ebookhub.user.entities.User;
 import com.herokuapp.ebookhub.user.usecases.RegisterUserUseCase;
+import com.herokuapp.ebookhub.book.usecases.CreateBookUseCase;
+import com.herokuapp.ebookhub.category.entities.CategoryRepository;
+import com.herokuapp.ebookhub.category.usecases.GetCategoryUseCase;
 import com.herokuapp.ebookhub.user.entities.UserRepository;
 
 import java.util.List;
@@ -45,10 +49,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Main {
 
 	private UserRepository userRepository;
+	private BookRepository bookRepository;
+	private CategoryRepository categoryRepository;
 
 	@Autowired
-	public Main(UserRepository userRepository) {
+	public Main(
+		UserRepository userRepository,
+		BookRepository bookRepository,
+		CategoryRepository categoryRepository) {
 		this.userRepository = userRepository;
+		this.bookRepository = bookRepository;
+		this.categoryRepository = categoryRepository;
 	}
 	public static void main (String[] args) {
 		SpringApplication.run(Main.class, args);
@@ -77,6 +88,22 @@ public class Main {
 	public ResponseEntity<Map<String, Object>> DeleteUser(
 	@PathVariable("id") long id) {
 		return new RegisterUserUseCase(this.userRepository).DeleteUser(id);
+	}
+
+	@GetMapping("/books")
+	public ResponseEntity<List<Object>> GetAllBooks(
+	@RequestParam(required = false) Integer page,
+	@RequestParam(required = false) Integer pageSize,
+	@RequestParam(required = false) String category) {
+		return new CreateBookUseCase(this.bookRepository).GetBooks(page, pageSize, category);
+	}
+
+	@GetMapping("/categories")
+	public ResponseEntity<List<Object>> GetAllCategories(
+	@RequestParam(required = false) String category,
+	@RequestParam(required = false) String sub_category,
+	@RequestParam(required = false) Long no) {
+		return new GetCategoryUseCase(categoryRepository).GetCategories(category, sub_category, no);
 	}
 	
 	@GetMapping("/db")

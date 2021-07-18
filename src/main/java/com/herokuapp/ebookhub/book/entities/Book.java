@@ -28,13 +28,17 @@ public class Book {
     private String author;
     private String publisher;
     private String description;
-    private Integer stock;
+    private Integer quantity;
     private String category;
-    private Date created_at;
+    private Date publish_date;
 
     // @OneToOne
     // @JoinColumn(name = "user_id")
     // private User user;
+
+    public Long getBookId() {
+        return this.book_id;
+    }
 
     public String getTitle() {
         return this.title;
@@ -42,6 +46,34 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getImgPath() {
+        return this.img_path;
+    }
+
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public String getPublisher() {
+        return this.publisher;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public Integer getQuantity() {
+        return this.quantity;
+    }
+
+    public String getCategory() {
+        return this.category;
+    }
+
+    public Date getPublishDate() {
+        return this.publish_date;
     }
 
     @Override
