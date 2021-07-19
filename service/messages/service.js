@@ -22,6 +22,18 @@ let fetch = async (req, res) => {
     }
 }
 
+let fetchMessage = async (req, res) => {
+    try {
+        const result = await messageRepo.fetchDetailBySenderId(req.userAuth.id);
+        const response = await messageTransformer.transformMessage(result);
+        res.status(200).json(response);
+    } catch (error) {
+        console.log(error.stack);
+        res.status(500).send(error);
+    }
+}
+
 module.exports = {
-    fetch
+    fetch,
+    fetchMessage
 }

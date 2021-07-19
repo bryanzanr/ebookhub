@@ -23,6 +23,20 @@ const transform = (messages, total, page, page_size) => {
     }
 }
 
+const transformMessage = (message) => {
+    return {
+        data: {
+            id: message.id,
+            sender_id: message.sender_id,
+            text: message.text,
+            secret_key: message.secret_key,
+            created_at: moment(message.created_at).format(),
+            attachment_id: message.attachment_id
+        }
+    }
+}
+
 module.exports = {
-    transform
+    transform,
+    transformMessage
 }

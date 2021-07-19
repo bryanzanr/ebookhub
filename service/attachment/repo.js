@@ -1,4 +1,5 @@
 const mysqlPool = require('../utils/mysql-db-pool').promise();
+const mysql = require('mysql2');
 
 let fetchData = async (page, page_size) => {
     try {
@@ -39,7 +40,22 @@ let fetchDetailById = async (attachment_id) => {
     }
 }
 
+let saveData = async (mime_type, metadata, content) => {
+    try {
+        const query = `
+            INSERT INTO attachments(mime_type, metadata, content)
+            VALUES(${mysql.escape(mime_type)}, ${mysql.escape(metadata)}, NULL)
+        `;
+        const [result] = await mysqlPool.execute(query);
+        return result;
+    } catch (error) {
+        console.log(error.stack);
+        throw error;
+    }
+}
+
 module.exports = {
     fetchData,
-    fetchDetailById
+    fetchDetailById,
+    saveData
 }

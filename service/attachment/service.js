@@ -22,6 +22,23 @@ let fetch = async (req, res) => {
     }
 }
 
+let add = async (req, res) => {
+    try {
+        let {
+            mime_type,
+            metadata,
+            content
+        } = req.body;
+
+        const response = await attachmentRepo.saveData(mime_type, metadata, content);
+        res.status(200).json(response);
+    } catch (error) {
+        console.log(error.stack);
+        res.status(500).send(error);
+    }
+}
+
 module.exports = {
-    fetch
+    fetch,
+    add
 }
