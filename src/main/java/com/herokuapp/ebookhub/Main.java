@@ -112,6 +112,19 @@ public class Main {
 		@RequestBody(required = false) CreateRequest createRequest) {
 			return new CreateBookUseCase(this.bookRepository).AddBook(createRequest);
 	}
+
+	@PutMapping("/books/{id}")
+	public ResponseEntity<Map<String, Object>> EditBook(
+	@PathVariable("id") long id,
+	@RequestBody(required = false) CreateRequest createRequest) {
+		return new CreateBookUseCase(this.bookRepository).UpdateBook(createRequest, id);
+	}
+
+	@DeleteMapping("/books/{id}")
+	public ResponseEntity<Map<String, Object>> DeleteBook(
+	@PathVariable("id") long id) {
+		return new CreateBookUseCase(this.bookRepository).DeleteBook(id);
+	}
 	
 	@GetMapping("/db")
 	public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String email) {

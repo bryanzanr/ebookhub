@@ -95,6 +95,43 @@ public class CreateBookUseCase {
 		}
 	}
 
+    public ResponseEntity<Map<String, Object>> UpdateBook(CreateRequest createRequest, Long id) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		try {
+			Book book = new Book(
+				createRequest.getImgPath(),
+				createRequest.getTitle(),
+				createRequest.getAuthor(),
+				createRequest.getPublisher(),
+                createRequest.getDescription(),
+                createRequest.getStock(),
+                createRequest.getCategory(),
+                new Date()
+				);
+			book.setBookId(id);
+			bookRepository.save(book);
+			response.put("status", 200);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("error", e);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+    public ResponseEntity<Map<String, Object>> DeleteBook(Long id) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		try {
+			Book book = new Book();
+			book.setBookId(id);
+			bookRepository.delete(book);
+			response.put("status", 200);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("error", e);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
     // private User getUser(CreateBookCmd cmd) {
     //     return userRepository.findById(cmd.getUserId())
     //         .orElseThrow(() -> new EntityNotFoundException(

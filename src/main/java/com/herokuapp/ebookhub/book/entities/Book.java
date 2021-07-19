@@ -66,6 +66,10 @@ public class Book {
         return this.bookId;
     }
 
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
+    }
+
     public String getTitle() {
         return this.title;
     }
