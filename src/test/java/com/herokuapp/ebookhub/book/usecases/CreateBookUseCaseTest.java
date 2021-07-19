@@ -2,8 +2,8 @@ package com.herokuapp.ebookhub.book.usecases;
 
 import com.herokuapp.ebookhub.book.entities.Book;
 import com.herokuapp.ebookhub.book.entities.BookRepository;
-import com.herokuapp.ebookhub.book.usecases.CreateBookCmd;
-import com.herokuapp.ebookhub.book.usecases.CreateBookUseCase;
+// import com.herokuapp.ebookhub.book.usecases.CreateBookCmd;
+// import com.herokuapp.ebookhub.book.usecases.CreateBookUseCase;
 // import com.herokuapp.ebookhub.user.entities.User;
 // import com.herokuapp.ebookhub.user.entities.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import javax.persistence.EntityExistsException;
-import javax.persistence.EntityNotFoundException;
+// import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;

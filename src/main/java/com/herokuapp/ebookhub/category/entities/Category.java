@@ -10,8 +10,9 @@ public class Category {
     @GeneratedValue
     private Long no;
 
+    @Column(name="sub_category")
+    private String subCategory;
     @Column
-    private String sub_category;
     private String category;
 
     public Long getNo() {
@@ -19,7 +20,7 @@ public class Category {
     }
 
     public String getSubCategory() {
-        return this.sub_category;
+        return this.subCategory;
     }
 
     public String getCategory() {

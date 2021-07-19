@@ -20,7 +20,8 @@ public class Orders {
 
     @Id
     @GeneratedValue
-    private Long order_id;
+    @Column(name = "order_id")
+    private Long orderId;
 
     @OneToOne
     @JoinColumn(name = "user_id")
@@ -36,7 +37,7 @@ public class Orders {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Orders orders = (Orders) o;
 
-        return Objects.equals(order_id, orders.order_id);
+        return Objects.equals(orderId, orders.orderId);
     }
 
     @Override

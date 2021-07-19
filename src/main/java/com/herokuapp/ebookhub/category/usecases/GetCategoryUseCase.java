@@ -20,14 +20,14 @@ public class GetCategoryUseCase {
         this.categoryRepository = categoryRepository;
     }
 
-    public ResponseEntity<List<Object>> GetCategories(String category, String sub_category, Long no) {
+    public ResponseEntity<List<Object>> GetCategories(String category, String subCategory, Long no) {
 		List<Object> response = new ArrayList<Object>();
         List<Category> categories = new ArrayList<Category>();
         if (category != null && category != "") {
             categories = categoryRepository.findByCategory(category);
         }else {
-            if (sub_category != null && sub_category != "") {
-                // categories.add(categoryRepository.searchJpaQueryTest(sub_category).get());   
+            if (subCategory != null && subCategory != "") {
+                categories = categoryRepository.findBySubCategory(subCategory);   
             }else {
                 if (no != null) {
                     categories.add(categoryRepository.findById(no).get());

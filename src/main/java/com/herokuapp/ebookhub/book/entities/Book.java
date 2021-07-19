@@ -20,24 +20,50 @@ public class Book {
 
     @Id
     @GeneratedValue
-    private Long book_id;
+    @Column(name="book_id")
+    private Long bookId;
 
+    @Column(name="img_path")
+    private String imgPath;
+    
     @Column
-    private String img_path;
     private String title;
     private String author;
     private String publisher;
     private String description;
     private Integer quantity;
     private String category;
-    private Date publish_date;
+
+    @Column(name="publish_date")
+    private Date publishDate;
 
     // @OneToOne
     // @JoinColumn(name = "user_id")
     // private User user;
 
+    public Book() {}
+
+    public Book(
+    String imgPath,
+    String title,
+    String author,
+    String publisher,
+    String description,
+    Integer quantity,
+    String category,
+    Date publishDate) {
+        this.imgPath= imgPath;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.description = description;
+        this.quantity = quantity;
+        this.category = category;
+        this.publishDate = publishDate;
+    }
+
     public Long getBookId() {
-        return this.book_id;
+        return this.bookId;
     }
 
     public String getTitle() {
@@ -49,7 +75,7 @@ public class Book {
     }
 
     public String getImgPath() {
-        return this.img_path;
+        return this.imgPath;
     }
 
     public String getAuthor() {
@@ -73,7 +99,7 @@ public class Book {
     }
 
     public Date getPublishDate() {
-        return this.publish_date;
+        return this.publishDate;
     }
 
     @Override
@@ -82,11 +108,19 @@ public class Book {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Book book = (Book) o;
 
-        return Objects.equals(book_id, book.book_id);
+        return Objects.equals(bookId, book.bookId);
     }
 
     @Override
     public int hashCode() {
         return 56842787;
+    }
+
+    public static Book builder() {
+        return new Book();
+    }
+
+    public static Book build() {
+        return new Book();
     }
 }

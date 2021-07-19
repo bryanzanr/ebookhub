@@ -11,6 +11,10 @@ public class CreateBookCmd {
 
     // long userId;
 
+    public CreateBookCmd(String bookTitle) {
+        this.bookTitle = bookTitle;
+    }
+
     public String getBookTitle() {
         return this.bookTitle;
     }
@@ -22,5 +26,9 @@ public class CreateBookCmd {
         // book.setUser(user);
 
         return book;
+    }
+
+    public static CreateBookCmd valueOf(String bookTitle) {
+        return new CreateBookCmd(bookTitle); 
     }
 }

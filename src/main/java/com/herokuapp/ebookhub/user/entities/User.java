@@ -18,7 +18,8 @@ public class User {
 
     @Id
     @GeneratedValue
-    private Long user_id;
+    @Column(name="user_id")
+    private Long userId;
 
     @Column
     private String role;
@@ -55,12 +56,12 @@ public class User {
         return this.username;
     }
 
-    public Long getId() {
-        return this.user_id;
+    public Long getUserId() {
+        return this.userId;
     }
 
-    public void setId(Long user_id) {
-        this.user_id = user_id;
+    public void setId(Long userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class User {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         User user = (User) o;
 
-        return Objects.equals(user_id, user.user_id);
+        return Objects.equals(userId, user.userId);
     }
 
     @Override

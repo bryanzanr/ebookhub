@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.herokuapp.ebookhub.book.dto.request.CreateRequest;
 import com.herokuapp.ebookhub.book.entities.BookRepository;
 import com.herokuapp.ebookhub.user.dto.request.LoginRequest;
 import com.herokuapp.ebookhub.user.dto.request.RegisterRequest;
@@ -101,9 +102,15 @@ public class Main {
 	@GetMapping("/categories")
 	public ResponseEntity<List<Object>> GetAllCategories(
 	@RequestParam(required = false) String category,
-	@RequestParam(required = false) String sub_category,
+	@RequestParam(required = false) String subCategory,
 	@RequestParam(required = false) Long no) {
-		return new GetCategoryUseCase(categoryRepository).GetCategories(category, sub_category, no);
+		return new GetCategoryUseCase(categoryRepository).GetCategories(category, subCategory, no);
+	}
+
+	@PostMapping("/books")
+	public ResponseEntity<Map<String, Object>> AddBook(
+		@RequestBody(required = false) CreateRequest createRequest) {
+			return new CreateBookUseCase(this.bookRepository).AddBook(createRequest);
 	}
 	
 	@GetMapping("/db")

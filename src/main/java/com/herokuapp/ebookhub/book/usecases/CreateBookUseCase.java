@@ -1,6 +1,7 @@
 package com.herokuapp.ebookhub.book.usecases;
 
 import com.herokuapp.ebookhub.book.entities.BookRepository;
+import com.herokuapp.ebookhub.book.dto.request.CreateRequest;
 import com.herokuapp.ebookhub.book.entities.Book;
 // import com.herokuapp.ebookhub.user.entities.User;
 // import com.herokuapp.ebookhub.user.entities.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Date;
 import java.util.ArrayList;
 
 import org.springframework.data.domain.Pageable;
@@ -67,6 +69,28 @@ public class CreateBookUseCase {
 			}
             return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+    public ResponseEntity<Map<String, Object>> AddBook(CreateRequest createRequest) {
+		Map<String, Object> response = new HashMap<String, Object>();
+		try {
+			bookRepository.save(new Book(
+				createRequest.getImgPath(),
+				createRequest.getTitle(),
+				createRequest.getAuthor(),
+				createRequest.getPublisher(),
+                createRequest.getDescription(),
+                createRequest.getStock(),
+                createRequest.getCategory(),
+                new Date()
+				));
+			response.put("status", 200);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("error", e);
+            response.put("request", createRequest);
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

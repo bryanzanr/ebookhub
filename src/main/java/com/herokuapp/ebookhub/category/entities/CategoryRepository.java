@@ -10,6 +10,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findByCategory(String category);
 
+    List<Category> findBySubCategory(String subCategory);
+
     // @Query("select c from category where c.sub_category = ?1")
     // Optional<Category> searchJpaQueryTest(String sub_category);
 
