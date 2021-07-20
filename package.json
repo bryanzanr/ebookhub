@@ -12,10 +12,13 @@
   },
   "dependencies": {
     "auth-header": "^1.0.0",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.15.2",
+    "firebase-admin": "^9.11.0",
+    "googleapis": "^82.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mysql2": "^2.1.0"
