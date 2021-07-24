@@ -1,17 +1,21 @@
 package com.herokuapp.ebookhub;
 
+// import org.json.simple.JSONException;
+// import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
+
+import java.io.IOException;
 import java.sql.SQLException;
 
 import org.springframework.context.annotation.PropertySource;
 
 import org.springframework.core.env.Environment;
-
+// import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
@@ -32,7 +36,7 @@ public class DataSourceConfig {
     private String dbPass;
 
     @Bean
-    public DataSource dataSource() throws SQLException {
+    public DataSource dataSource() throws SQLException, IOException {
         // System.out.println("MASUK" + dbUrl);
         dbUrl = environment.getProperty("spring.datasource.url");
         dbUser = environment.getProperty("spring.datasource.username");
@@ -47,6 +51,8 @@ public class DataSourceConfig {
 //      config.setUsername(dbUser);
 //      config.setPassword(dbPass);
 //      return new HikariDataSource(config);
+			FirebaseConfig firebaseConfig = new FirebaseConfig(this.environment);
+			firebaseConfig.getFirebaseToken();
             DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
             dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
             dataSourceBuilder.url(dbUrl);

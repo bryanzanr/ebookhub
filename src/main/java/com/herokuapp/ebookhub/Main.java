@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+// import com.herokuapp.ebookhub.*;
+
 import com.herokuapp.ebookhub.book.dto.request.CreateRequest;
 import com.herokuapp.ebookhub.book.entities.BookRepository;
 import com.herokuapp.ebookhub.user.dto.request.LoginRequest;
@@ -38,29 +40,35 @@ import com.herokuapp.ebookhub.user.usecases.RegisterUserUseCase;
 import com.herokuapp.ebookhub.book.usecases.CreateBookUseCase;
 import com.herokuapp.ebookhub.category.entities.CategoryRepository;
 import com.herokuapp.ebookhub.category.usecases.GetCategoryUseCase;
+import com.herokuapp.ebookhub.merchants.usecases.FetchMerchantsUseCase;
 import com.herokuapp.ebookhub.user.entities.UserRepository;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.context.annotation.PropertySource;
 
 @Controller
 @SpringBootApplication
+// @PropertySource("application.properties")
 public class Main {
 
 	private UserRepository userRepository;
 	private BookRepository bookRepository;
 	private CategoryRepository categoryRepository;
+	private FirebaseConfig firebaseConfig;
 
 	@Autowired
 	public Main(
 		UserRepository userRepository,
 		BookRepository bookRepository,
-		CategoryRepository categoryRepository) {
+		CategoryRepository categoryRepository) throws IOException {
 		this.userRepository = userRepository;
 		this.bookRepository = bookRepository;
 		this.categoryRepository = categoryRepository;
+		this.firebaseConfig = new FirebaseConfig();
 	}
 	public static void main (String[] args) {
 		SpringApplication.run(Main.class, args);
@@ -124,6 +132,11 @@ public class Main {
 	public ResponseEntity<Map<String, Object>> DeleteBook(
 	@PathVariable("id") long id) {
 		return new CreateBookUseCase(this.bookRepository).DeleteBook(id);
+	}
+
+	@GetMapping("/merchants")
+	public ResponseEntity<List<Object>> GetAllMerchants() {
+		return new FetchMerchantsUseCase(this.firebaseConfig).GetMerchants();
 	}
 	
 	@GetMapping("/db")

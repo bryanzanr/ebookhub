@@ -41,7 +41,7 @@ public class Book {
     // @JoinColumn(name = "user_id")
     // private User user;
 
-    public Book() {}
+    // public Book() {}
 
     public Book(
     String imgPath,

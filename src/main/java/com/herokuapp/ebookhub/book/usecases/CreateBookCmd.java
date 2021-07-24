@@ -28,7 +28,7 @@ public class CreateBookCmd {
         return book;
     }
 
-    public static CreateBookCmd valueOf(String bookTitle) {
-        return new CreateBookCmd(bookTitle); 
-    }
+    // public static CreateBookCmd valueOf(String bookTitle) {
+    //     return new CreateBookCmd(bookTitle); 
+    // }
 }
