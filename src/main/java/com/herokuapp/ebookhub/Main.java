@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.herokuapp.ebookhub.advertisements.usecases.FetchAdvertisementsUseCase;
+
 // import com.herokuapp.ebookhub.*;
 
 import com.herokuapp.ebookhub.book.dto.request.CreateRequest;
@@ -40,6 +42,7 @@ import com.herokuapp.ebookhub.user.usecases.RegisterUserUseCase;
 import com.herokuapp.ebookhub.book.usecases.CreateBookUseCase;
 import com.herokuapp.ebookhub.category.entities.CategoryRepository;
 import com.herokuapp.ebookhub.category.usecases.GetCategoryUseCase;
+import com.herokuapp.ebookhub.customers.usecases.LoginCustomersUseCase;
 import com.herokuapp.ebookhub.merchants.usecases.FetchMerchantsUseCase;
 import com.herokuapp.ebookhub.user.entities.UserRepository;
 
@@ -147,7 +150,17 @@ public class Main {
 	public ResponseEntity<List<Object>> GetAllMerchants() {
 		return new FetchMerchantsUseCase(this.firebaseConfig).GetMerchants();
 	}
-	
+
+	@GetMapping("/advertisements")
+	public ResponseEntity<List<Object>> GetAllAdvertisements() {
+		return new FetchAdvertisementsUseCase().GetAdvertisements();
+	}
+
+	@GetMapping("/customers")
+	public ResponseEntity<List<Object>> GetAllCustomers() {
+		return new LoginCustomersUseCase().GetCustomers();
+	}
+	 
 	@GetMapping("/db")
 	public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) String email) {
 		return new RegisterUserUseCase(this.userRepository).TestDatabase(email);
