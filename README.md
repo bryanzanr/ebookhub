@@ -366,20 +366,10 @@ Example Response Body:
 
 ```json
 {
-    "data": {
-        "getOrdersByUserId": [
-            {
-                "order_id": "0",
-                "book_id": 6,
-                "user_id": 7
-            },
-            {
-                "order_id": "0",
-                "book_id": 8,
-                "user_id": 7
-            }
-        ]
-    }
+    "timestamp": "2021-07-25T03:24:11.627+00:00",
+    "status": 500,
+    "error": "Internal Server Error",
+    "path": "/merchants"
 }
 ```
 

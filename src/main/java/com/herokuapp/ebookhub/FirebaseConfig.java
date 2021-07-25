@@ -3,6 +3,8 @@ package com.herokuapp.ebookhub;
 import java.util.HashMap;
 
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 // import org.json.simple.JSONObject;
 // import org.json.simple.JSONException;
 // import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -36,8 +38,9 @@ import com.google.gson.Gson;
 // import org.codehaus.jackson.map.ObjectMapper;
 
 @Configuration
-@PropertySource("application.properties")
-// @PropertySource("classpath:application.properties")
+// @PropertySource("application.properties")
+@Component
+@PropertySource("classpath:application.properties")
 // @PropertySource(value = { "classpath:application.properties" }, ignoreResourceNotFound = false)
 // public class FirebaseConfig implements EnvironmentAware {
 public class FirebaseConfig {
@@ -45,13 +48,45 @@ public class FirebaseConfig {
     // @Autowired
     // Environment environment;
 
-    private Environment environment;
+    private static Environment environment;
 
-    private String testEnv;
+    private static String testEnv;
 
-    private String token;
+    private static String token;
 
-    public FirebaseConfig() {}
+    // @Value("${flyit.firebase.type}")
+    // private String type;
+
+    // @Value("${flyit.firebase.project.id}")
+    // private String projectId;
+
+    // @Value("${flyit.firebase.private.key.id}")
+    // private String privateKeyId;
+
+    // @Value("${flyit.firebase.private.key}")
+    // private static String privateKey;
+
+    // @Value("${flyit.firebase.type}")
+    // private String clientEmail;
+
+    // @Value("${flyit.firebase.type}")
+    // private String clientId;
+
+    // @Value("${flyit.firebase.type}")
+    // private String authUrl;
+
+    // @Value("${flyit.firebase.type}")
+    // private String tokenUrl;
+
+    // @Value("${flyit.firebase.type}")
+    // private String authProvider;
+
+    // @Value("${flyit.firebase.type}")
+    // private String certUrl;
+
+    // public FirebaseConfig() {
+    //     this.environment = getEnvironment();
+    // }
 
     // @Override
     // public void setEnvironment(final Environment environment) {
@@ -59,20 +94,21 @@ public class FirebaseConfig {
     // }
 
     public FirebaseConfig(Environment environment) {
-        this.environment = environment;
+        FirebaseConfig.environment = environment;
     }
 
-    public String getToken() {
-        return this.token;
+    public static String getToken() {
+        return token;
     }
 
     // @Bean
-    public void getFirebaseToken() throws IOException {
+    public static void getFirebaseToken() throws IOException {
     // public void getFirebaseToken() {
         // Load the service account key JSON file
         // try {
             testEnv = environment.getProperty("flyit.firebase.private.key");
-            System.out.println("Masuk " + testEnv);
+            // testEnv = privateKey;
+            // System.out.println("Masuk " + testEnv);
             Map<String, String> serviceAccount = new HashMap<>();
             // JSONObject serviceAccount = new JSONObject();
             serviceAccount.put("type", 
@@ -107,7 +143,7 @@ public class FirebaseConfig {
             String json = gson.toJson(serviceAccount);
             json = json.replaceAll("\\\\\\\\", "\\\\");
             // String json = new JSONObject(serviceAccount).toString();
-            System.out.println("Test " + json);
+            // System.out.println("Test " + json);
     
             InputStream is = new ByteArrayInputStream(json.getBytes());
 
@@ -134,7 +170,7 @@ public class FirebaseConfig {
             // Use the Google credential to generate an access token
             scoped.refreshIfExpired();
             token = scoped.getAccessToken().getTokenValue();
-            System.out.println("From config " + token);
+            // System.out.println("From config " + token);
         // } catch (IOException ie) {
         //     ie.printStackTrace();
         // }

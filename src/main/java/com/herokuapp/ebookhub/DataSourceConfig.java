@@ -35,6 +35,14 @@ public class DataSourceConfig {
   //  @Value("${SPRING_DATASOURCE_PASSWORD}")
     private String dbPass;
 
+	private Environment firebaseEnvironment;
+
+	public DataSourceConfig() {}
+
+    public Environment getEnvironment() {
+		return this.firebaseEnvironment;
+    }
+
     @Bean
     public DataSource dataSource() throws SQLException, IOException {
         // System.out.println("MASUK" + dbUrl);
@@ -51,8 +59,9 @@ public class DataSourceConfig {
 //      config.setUsername(dbUser);
 //      config.setPassword(dbPass);
 //      return new HikariDataSource(config);
-			FirebaseConfig firebaseConfig = new FirebaseConfig(this.environment);
-			firebaseConfig.getFirebaseToken();
+			// FirebaseConfig firebaseConfig = new FirebaseConfig(this.environment);
+			// firebaseConfig.getFirebaseToken();
+			firebaseEnvironment = this.environment;
             DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
             dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
             dataSourceBuilder.url(dbUrl);

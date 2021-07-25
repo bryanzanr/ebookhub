@@ -1,6 +1,13 @@
 package com.herokuapp.ebookhub.merchants.entities;
 
-public class Merchants {
+import java.io.Serializable;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public class Merchants implements Serializable {
 
     private String id;
     private String first_name;
@@ -9,8 +16,8 @@ public class Merchants {
     private String profile_picture;
     private String username;
 
-    public Merchants(String id) {
-        this.id = id;
-    }
+    // public Merchants(String id) {
+    //     this.id = id;
+    // }
 
 }

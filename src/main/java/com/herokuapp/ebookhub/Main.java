@@ -47,11 +47,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+// import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.context.annotation.Configuration;
 // import org.springframework.context.annotation.PropertySource;
 
 @Controller
 @SpringBootApplication
+// @Configuration
 // @PropertySource("application.properties")
 public class Main {
 
@@ -60,15 +63,21 @@ public class Main {
 	private CategoryRepository categoryRepository;
 	private FirebaseConfig firebaseConfig;
 
+	// @Autowired
+	// Environment environment;
+
 	@Autowired
 	public Main(
 		UserRepository userRepository,
 		BookRepository bookRepository,
-		CategoryRepository categoryRepository) throws IOException {
+		CategoryRepository categoryRepository, FirebaseConfig firebaseConfig) throws IOException {
 		this.userRepository = userRepository;
 		this.bookRepository = bookRepository;
 		this.categoryRepository = categoryRepository;
-		this.firebaseConfig = new FirebaseConfig();
+		// this.firebaseConfig = new FirebaseConfig(new DataSourceConfig().getEnvironment());
+		// this.firebaseConfig.getFirebaseToken();
+		this.firebaseConfig = firebaseConfig;
+		FirebaseConfig.getFirebaseToken();
 	}
 	public static void main (String[] args) {
 		SpringApplication.run(Main.class, args);
