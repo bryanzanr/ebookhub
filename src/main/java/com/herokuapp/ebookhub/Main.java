@@ -42,14 +42,18 @@ import com.herokuapp.ebookhub.user.usecases.RegisterUserUseCase;
 import com.herokuapp.ebookhub.book.usecases.CreateBookUseCase;
 import com.herokuapp.ebookhub.category.entities.CategoryRepository;
 import com.herokuapp.ebookhub.category.usecases.GetCategoryUseCase;
+import com.herokuapp.ebookhub.contact.dto.request.ContactRequest;
+import com.herokuapp.ebookhub.contact.usecases.LoginContactUseCase;
 import com.herokuapp.ebookhub.customers.usecases.LoginCustomersUseCase;
 import com.herokuapp.ebookhub.merchants.usecases.FetchMerchantsUseCase;
 import com.herokuapp.ebookhub.user.entities.UserRepository;
 
 import java.io.IOException;
+// import java.security.Security;
 import java.util.List;
 import java.util.Map;
 
+// import org.bouncycastle.jce.provider.BouncyCastleProvider;
 // import org.springframework.core.env.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.context.annotation.Configuration;
@@ -65,6 +69,7 @@ public class Main {
 	private BookRepository bookRepository;
 	private CategoryRepository categoryRepository;
 	private FirebaseConfig firebaseConfig;
+	private CloudkitConfig cloudkitConfig;
 
 	// @Autowired
 	// Environment environment;
@@ -73,7 +78,9 @@ public class Main {
 	public Main(
 		UserRepository userRepository,
 		BookRepository bookRepository,
-		CategoryRepository categoryRepository, FirebaseConfig firebaseConfig) throws IOException {
+		CategoryRepository categoryRepository, 
+		FirebaseConfig firebaseConfig,
+		CloudkitConfig cloudkitConfig) throws IOException {
 		this.userRepository = userRepository;
 		this.bookRepository = bookRepository;
 		this.categoryRepository = categoryRepository;
@@ -81,6 +88,8 @@ public class Main {
 		// this.firebaseConfig.getFirebaseToken();
 		this.firebaseConfig = firebaseConfig;
 		FirebaseConfig.getFirebaseToken();
+		CloudkitConfig.setUpEnv();
+		this.cloudkitConfig = cloudkitConfig;
 	}
 	public static void main (String[] args) {
 		SpringApplication.run(Main.class, args);
@@ -159,6 +168,17 @@ public class Main {
 	@GetMapping("/customers")
 	public ResponseEntity<List<Object>> GetAllCustomers() {
 		return new LoginCustomersUseCase().GetCustomers();
+	}
+
+	@GetMapping("/contact")
+	public ResponseEntity<List<Object>> GetAllContacts() {
+		return new LoginContactUseCase(this.cloudkitConfig).GetContacts();
+	}
+
+	@PostMapping("/contact")
+	public ResponseEntity<List<Object>> AddContact(
+	@RequestBody(required = false) ContactRequest contactRequest) {
+		return new LoginContactUseCase(this.cloudkitConfig).SaveContact(contactRequest);
 	}
 	 
 	@GetMapping("/db")
