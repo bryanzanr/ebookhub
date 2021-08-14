@@ -42,6 +42,7 @@ import com.herokuapp.ebookhub.user.usecases.RegisterUserUseCase;
 import com.herokuapp.ebookhub.book.usecases.CreateBookUseCase;
 import com.herokuapp.ebookhub.category.entities.CategoryRepository;
 import com.herokuapp.ebookhub.category.usecases.GetCategoryUseCase;
+import com.herokuapp.ebookhub.customers.dto.request.PreferenceRequest;
 import com.herokuapp.ebookhub.customers.usecases.LoginCustomersUseCase;
 import com.herokuapp.ebookhub.merchants.usecases.FetchMerchantsUseCase;
 import com.herokuapp.ebookhub.user.entities.UserRepository;
@@ -159,6 +160,21 @@ public class Main {
 	@GetMapping("/customers")
 	public ResponseEntity<List<Object>> GetAllCustomers() {
 		return new LoginCustomersUseCase().GetCustomers();
+	}
+
+	@PostMapping("/customers")
+	public ResponseEntity<Map<String, Object>> AddCustomer(
+		@RequestBody(required = false) PreferenceRequest preferenceRequest
+	) {
+		return new LoginCustomersUseCase().AddPreference(preferenceRequest);
+	}
+
+	@PutMapping("/customers/{id}")
+	public ResponseEntity<Map<String, Object>> EditCustomer(
+		@PathVariable("id") String id,
+		@RequestBody(required = false) PreferenceRequest preferenceRequest
+	) {
+		return new LoginCustomersUseCase().UpdatePreference(preferenceRequest, id);
 	}
 	 
 	@GetMapping("/db")
