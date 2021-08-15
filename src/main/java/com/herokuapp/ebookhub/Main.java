@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.herokuapp.ebookhub.advertisements.dto.request.BroadcastRequest;
 import com.herokuapp.ebookhub.advertisements.usecases.FetchAdvertisementsUseCase;
 
 // import com.herokuapp.ebookhub.*;
@@ -44,6 +45,7 @@ import com.herokuapp.ebookhub.category.entities.CategoryRepository;
 import com.herokuapp.ebookhub.category.usecases.GetCategoryUseCase;
 import com.herokuapp.ebookhub.customers.dto.request.PreferenceRequest;
 import com.herokuapp.ebookhub.customers.usecases.LoginCustomersUseCase;
+import com.herokuapp.ebookhub.merchants.dto.request.SellerRequest;
 import com.herokuapp.ebookhub.merchants.usecases.FetchMerchantsUseCase;
 import com.herokuapp.ebookhub.user.entities.UserRepository;
 
@@ -154,11 +156,46 @@ public class Main {
 		return new FetchMerchantsUseCase(this.firebaseConfig).GetMerchants(id);
 	}
 
+	@PostMapping("/merchants")
+	public ResponseEntity<Map<String, Object>> AddMerchant(
+		@RequestBody(required = false) SellerRequest sellerRequest
+	) {
+		return new FetchMerchantsUseCase(this.firebaseConfig)
+		.AddMerchant(sellerRequest, "POST");
+	}
+
+	@PutMapping("/merchants/{id}")
+	public ResponseEntity<Map<String, Object>> EditMerchant(
+		@PathVariable("id") String id,
+		@RequestBody(required = false) SellerRequest sellerRequest
+	) {
+		return new FetchMerchantsUseCase(this.firebaseConfig)
+		.AddMerchant(sellerRequest, "PUT " + id);
+	}
+
 	@GetMapping("/advertisements")
 	public ResponseEntity<List<Object>> GetAllAdvertisements(
 		@RequestParam(required = false) String id
 	) {
 		return new FetchAdvertisementsUseCase().GetAdvertisements(id);
+	}
+
+	@PostMapping("/advertisements")
+	public ResponseEntity<Map<String, Object>> AddAdvertisement(
+		@RequestBody(required = false) BroadcastRequest broadcastRequest
+	) {
+		// System.out.println("AWAL " + broadcastRequest);
+		return new FetchAdvertisementsUseCase()
+		.BroadcastAdvertisement(broadcastRequest, "POST");
+	}
+
+	@PutMapping("/advertisements/{id}")
+	public ResponseEntity<Map<String, Object>> EditAdvertisement(
+		@PathVariable("id") String id,
+		@RequestBody(required = false) BroadcastRequest broadcastRequest
+	) {
+		return new FetchAdvertisementsUseCase()
+		.BroadcastAdvertisement(broadcastRequest, "PUT " + id);
 	}
 
 	@GetMapping("/customers")

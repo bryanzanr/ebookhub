@@ -72,7 +72,7 @@ public class LoginCustomersUseCase {
     ) {
         Map<String, Object> response = new HashMap<String, Object>();
         String prefs = preferenceRequest.getPrefs();
-        if (prefs.indexOf("Error") != -1) {
+        if (prefs.indexOf("Error") != -1 || id == null) {
             response.put("timestamp", new Date());
             response.put("status", 415);
             response.put("error", prefs);
