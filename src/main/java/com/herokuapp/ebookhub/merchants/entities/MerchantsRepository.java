@@ -7,10 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 // import java.util.ArrayList;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.herokuapp.ebookhub.FirebaseConfig;
-import com.herokuapp.ebookhub.merchants.dto.response.MerchantsListResponse;
 
 public class MerchantsRepository {
 
@@ -19,14 +16,24 @@ public class MerchantsRepository {
     public MerchantsRepository(FirebaseConfig firebaseConfig) {
         this.firebaseConfig = firebaseConfig;
     }
+
+    public FirebaseConfig getFirebaseConfig() {
+        return this.firebaseConfig;
+    }
     
-    public String findAll() {
+    public String findAll(String id) {
         // List<Merchants> merchants = new ArrayList<>();
         try {
             // String authToken = this.firebaseConfig.getToken();
             String authToken = FirebaseConfig.getToken();
-            String databaseUrl = "https://flyit-e0aa3.firebaseio.com/merchants.json?"
-            + "print=pretty&access_token=" + authToken;
+            String databaseUrl;
+            if (id != null) {
+                databaseUrl = "https://flyit-e0aa3.firebaseio.com/merchants/" + id
+                + ".json?print=pretty&access_token=" + authToken;
+            }else {
+                databaseUrl = "https://flyit-e0aa3.firebaseio.com/merchants"
+                + ".json?print=pretty&access_token=" + authToken;
+            }
             URL url = new URL(databaseUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");

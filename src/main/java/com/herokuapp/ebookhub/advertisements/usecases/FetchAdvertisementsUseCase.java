@@ -17,19 +17,24 @@ public class FetchAdvertisementsUseCase {
 
     public FetchAdvertisementsUseCase() {}
 
-    public ResponseEntity<List<Object>> GetAdvertisements() {
+    public ResponseEntity<List<Object>> GetAdvertisements(String id) {
         
         List<Object> response = new ArrayList<Object>();
-        String data = new AdvertisementsRepository().findAll();
+        String data = new AdvertisementsRepository().findAll(id);
         Gson gson = new Gson();
         JsonObject temp = gson.fromJson(data, JsonObject.class);
         try {
-            for (Map.Entry<String, JsonElement> entry: temp.entrySet()) {
-                JsonObject tmp = entry.getValue().getAsJsonObject();
-                response.add(tmp);
+            if (id != null) {
+                response.add(temp);
+            }else {
+                for (Map.Entry<String, JsonElement> entry: temp.entrySet()) {
+                    JsonObject tmp = entry.getValue().getAsJsonObject();
+                    response.add(tmp);
+                }
             }
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
+            response.add(e);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

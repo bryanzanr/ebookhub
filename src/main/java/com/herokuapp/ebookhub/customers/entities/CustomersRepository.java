@@ -8,19 +8,24 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.herokuapp.ebookhub.FirebaseConfig;
-import com.herokuapp.ebookhub.customers.dto.request.PreferenceRequest;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class CustomersRepository {
 
-    public String findAll() {
+    public String findAll(String id) {
         try {
             String authToken = FirebaseConfig.getToken();
             // System.out.println("postman " + authToken);
-            String databaseUrl = "https://flyit-e0aa3.firebaseio.com/users.json?"
-            + "print=pretty&access_token=" + authToken;
+            String databaseUrl;
+            if (id != null) {
+                databaseUrl = "https://flyit-e0aa3.firebaseio.com/users/" + id
+                + ".json?print=pretty&access_token=" + authToken;
+            }else {
+                databaseUrl = "https://flyit-e0aa3.firebaseio.com/users.json?"
+                + "print=pretty&access_token=" + authToken;
+            }
             URL url = new URL(databaseUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");

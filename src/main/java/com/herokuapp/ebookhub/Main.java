@@ -148,18 +148,24 @@ public class Main {
 	}
 
 	@GetMapping("/merchants")
-	public ResponseEntity<List<Object>> GetAllMerchants() {
-		return new FetchMerchantsUseCase(this.firebaseConfig).GetMerchants();
+	public ResponseEntity<List<Object>> GetAllMerchants(
+		@RequestParam(required = false) String id
+	) {
+		return new FetchMerchantsUseCase(this.firebaseConfig).GetMerchants(id);
 	}
 
 	@GetMapping("/advertisements")
-	public ResponseEntity<List<Object>> GetAllAdvertisements() {
-		return new FetchAdvertisementsUseCase().GetAdvertisements();
+	public ResponseEntity<List<Object>> GetAllAdvertisements(
+		@RequestParam(required = false) String id
+	) {
+		return new FetchAdvertisementsUseCase().GetAdvertisements(id);
 	}
 
 	@GetMapping("/customers")
-	public ResponseEntity<List<Object>> GetAllCustomers() {
-		return new LoginCustomersUseCase().GetCustomers();
+	public ResponseEntity<List<Object>> GetAllCustomers(
+		@RequestParam(required = false) String id
+	) {
+		return new LoginCustomersUseCase().GetCustomers(id);
 	}
 
 	@PostMapping("/customers")

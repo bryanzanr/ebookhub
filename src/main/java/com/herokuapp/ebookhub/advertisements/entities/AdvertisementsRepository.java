@@ -11,11 +11,17 @@ public class AdvertisementsRepository {
 
     public AdvertisementsRepository() {}
 
-    public String findAll() {
+    public String findAll(String id) {
         try {
             String authToken = FirebaseConfig.getToken();
-            String databaseUrl = "https://flyit-e0aa3.firebaseio.com/advertisements.json?"
-            + "print=pretty&access_token=" + authToken;
+            String databaseUrl;
+            if (id != null) {
+                databaseUrl = "https://flyit-e0aa3.firebaseio.com/advertisements/" + id
+                + ".json?print=pretty&access_token=" + authToken;
+            }else {
+                databaseUrl = "https://flyit-e0aa3.firebaseio.com/advertisements.json?"
+                + "print=pretty&access_token=" + authToken;
+            }
             URL url = new URL(databaseUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");

@@ -25,10 +25,10 @@ public class FetchMerchantsUseCase {
         this.firebaseConfig = firebaseConfig;
     }
 
-    public ResponseEntity<List<Object>> GetMerchants() {
+    public ResponseEntity<List<Object>> GetMerchants(String id) {
         List<Object> response = new ArrayList<Object>();
         // List<Merchants> merchants = new MerchantsRepository(this.firebaseConfig).findAll();
-        String data = new MerchantsRepository(this.firebaseConfig).findAll();
+        String data = new MerchantsRepository(this.firebaseConfig).findAll(id);
         Gson gson = new Gson();
         JsonObject temp = gson.fromJson(data, JsonObject.class);
         try {
@@ -38,12 +38,17 @@ public class FetchMerchantsUseCase {
             //     response.add(entity);
             // }
             // response.add(data);
-            for (Map.Entry<String, JsonElement> entry: temp.entrySet()) {
-                JsonObject tmp = entry.getValue().getAsJsonObject();
-                response.add(tmp);
+            if (id != null) {
+                response.add(temp);
+            }else {
+                for (Map.Entry<String, JsonElement> entry: temp.entrySet()) {
+                    JsonObject tmp = entry.getValue().getAsJsonObject();
+                    response.add(tmp);
+                }
             }
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
+            response.add(e);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
