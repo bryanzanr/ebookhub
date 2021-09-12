@@ -2,14 +2,17 @@ package com.herokuapp.ebookhub.user.dto.request;
 
 // import lombok.AccessLevel;
 // import lombok.AllArgsConstructor;
-// import lombok.Builder;
+//import lombok.Builder;
 // import lombok.NoArgsConstructor;
 // import lombok.Value;
 
-// @Builder
+import lombok.Setter;
+
+//@Builder
 // @AllArgsConstructor
 // @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 // @Value
+@Setter
 public class LoginRequest {
 
     private String username;

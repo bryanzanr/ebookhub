@@ -26,9 +26,9 @@ public class RegisterUserUseCase {
 		List<User> users = userRepository.findAll();
 		try {
 			for (int i = 0; i < users.size(); i++) {
-				if (users.get(i).getUsername() == null || users.get(i).getPassword() == null) {
-					continue;
-				}
+//				if (users.get(i).getUsername() == null || users.get(i).getPassword() == null) {
+//					continue;
+//				}
 				if (users.get(i).getUsername().equalsIgnoreCase(loginRequest.getUsername()) && 
 					users.get(i).getPassword().equalsIgnoreCase(loginRequest.getPassword())) {
 					response.put("status", 200);

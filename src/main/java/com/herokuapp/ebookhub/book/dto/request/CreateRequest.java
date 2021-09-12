@@ -1,5 +1,8 @@
 package com.herokuapp.ebookhub.book.dto.request;
 
+//import lombok.Setter;
+//
+//@Setter
 public class CreateRequest {
 
     private String imgPath;
@@ -43,5 +46,7 @@ public class CreateRequest {
     public String getCategory() {
         return this.category;
     }
+
+    public void setTitle(String title) { this.title = title; }
 
 }

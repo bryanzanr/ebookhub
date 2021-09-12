@@ -6,7 +6,7 @@ import com.herokuapp.ebookhub.book.entities.Book;
 // import com.herokuapp.ebookhub.user.entities.User;
 // import com.herokuapp.ebookhub.user.entities.UserRepository;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+//import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -25,7 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class CreateBookUseCase {
 
     // private final UserRepository userRepository;
@@ -50,18 +50,18 @@ public class CreateBookUseCase {
     public ResponseEntity<List<Object>> GetBooks(Integer page, Integer pageSize, String category) {
 		List<Object> response = new ArrayList<Object>();
         Pageable pageable;
-        if (page != null && pageSize != null) {
-            pageable = PageRequest.of(page, pageSize, Sort.by("title").ascending());
-        }else {
-            pageable = PageRequest.of(0, 25, Sort.by("title").ascending());
-        }
-        List<Book> books = new ArrayList<Book>();
-        if (category != null && category != "") {
-            books = bookRepository.findByCategory(category);
-        }else {
-            books = bookRepository.findAll(pageable).getContent();
-        }
-		try {
+        try {
+			if (page != null && pageSize != null) {
+				pageable = PageRequest.of(page, pageSize, Sort.by("title").ascending());
+			}else {
+				pageable = PageRequest.of(0, 25, Sort.by("title").ascending());
+			}
+			List<Book> books = new ArrayList<Book>();
+			if (category != null && category != "") {
+				books = bookRepository.findByCategory(category);
+			}else {
+				books = bookRepository.findAll(pageable).getContent();
+			}
 			for (int i = 0; i < books.size(); i++) {
                 Map<String, Object> book = new HashMap<String, Object>();
                 book.put("data", books.get(i));	

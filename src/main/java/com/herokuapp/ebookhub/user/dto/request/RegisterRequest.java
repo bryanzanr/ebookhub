@@ -1,5 +1,8 @@
 package com.herokuapp.ebookhub.user.dto.request;
 
+import lombok.Setter;
+
+@Setter
 public class RegisterRequest extends LoginRequest {
         
     private String email;
